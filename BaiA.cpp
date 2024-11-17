@@ -1,7 +1,6 @@
 #include<iostream>
 #include<string>
 #include<vector>
-#include<algorithm>
 using namespace std;
 class sinhvien{
     string ma;
@@ -20,11 +19,11 @@ public:
     void setdiem(double diem) { this->diem = diem; }
     bool operator<(const sinhvien &sv) const { return diem < sv.diem; }
     bool operator>(const sinhvien &sv) const { return diem > sv.diem; }
-    friend ostream &operator<<(ostream &os, const sinhvien &sv) {
+    friend ostream &operator<<(ostream &os, const sinhvien &sv){
         os<<"Ma:"<<sv.ma<<" Ten:"<<sv.ten<<" Tuoi:"<<sv.tuoi<<" Diem:"<<sv.diem;
         return os;
     }
-    friend istream &operator>>(istream &is, sinhvien &sv) {
+    friend istream &operator>>(istream &is, sinhvien &sv){
         cout<<"Nhap ma:";is>>sv.ma;          
         cout<<"Nhap ten:";is.ignore(); getline(is, sv.ten);  
         cout<<"Nhap tuoi:";is>>sv.tuoi;
@@ -38,7 +37,7 @@ public:
     void themsinhvien(sinhvien sv){ 
         danhsach.push_back(sv);
     }
-    void hienthidanhsach() const{
+    void hienthidanhsach()const{
 	    if(danhsach.empty()){  
 	        cout<<"Danh sach sinh vien trong.\n";
 	    } 
@@ -49,7 +48,13 @@ public:
 	    }
 	}
     void sapxeptheodiem(){
-        sort(danhsach.begin(), danhsach.end(), greater<sinhvien>());
+		for(int i=0; i<danhsach.size() - 1; i++){
+			for(int j=i + 1; j<danhsach.size(); j++ ){
+				if(danhsach[i]<danhsach[j]){
+					swap(danhsach[i], danhsach[j]); 
+				} 
+			} 
+		} 
     }
     void timkiemsinhvien(string ten) const{
 	    bool c = false;
@@ -75,32 +80,32 @@ public:
 	   	}
 	}
     void suasinhvien(string ma){
-    for(auto it = danhsach.begin(); it != danhsach.end(); ++it){
-        if(it->getma() == ma){
-            string ten;
-            int tuoi;
-            double diem;
-            cout<<"Nhap ten moi:"; 
-            cin.ignore(); 
-            getline(cin, ten);
-            cout<<"Nhap tuoi moi:";cin>>tuoi;
-            cout<<"Nhap diem moi:";cin>>diem;
-            it->setten(ten);
-            it->settuoi(tuoi);
-            it->setdiem(diem);
-            cout<<"Da sua thong tin sinh vien:"<<*it<<endl;
-            return; 
-        }
-    }
-    cout << "Khong tim thay sinh vien co ma: " << ma << endl;
-}
+	    for(auto it = danhsach.begin(); it != danhsach.end(); ++it){
+	        if(it->getma() == ma){
+	            string ten;
+	            int tuoi;
+	            double diem;
+	            cout<<"Nhap ten moi:"; 
+	            cin.ignore(); 
+	            getline(cin, ten);
+	            cout<<"Nhap tuoi moi:";cin>>tuoi;
+	            cout<<"Nhap diem moi:";cin>>diem;
+	            it->setten(ten);
+	            it->settuoi(tuoi);
+	            it->setdiem(diem);
+	            cout<<"Da sua thong tin sinh vien:"<<*it<<endl;
+	            return; 
+	        }
+	    }
+	    cout<<"Khong tim thay sinh vien co ma: " <<ma<<endl;
+	}
 };
 class menu{
     quanlysinhvien qlsv;
 public:
     void hienthimenu(){
         int c;
-        do {
+        do{
             cout<<"\n--- MENU QUAN LY SINH VIEN ---\n";
             cout<<"1. Them sinh vien\n";
             cout<<"2. Hien thi danh sach\n";
@@ -116,9 +121,9 @@ public:
 		while(c != 7);
     }
     void xuly(int c){
-        if (c == 1){
+        if(c == 1){
             char a;
-            do {
+            do{
                 sinhvien sv;
                 cin>>sv;
                 qlsv.themsinhvien(sv);
@@ -162,15 +167,12 @@ public:
 		else if(c == 7){
             cout<<"Thoat chuong trinh.\n";
         } 
-		else {
+		else{
             cout<<"Lua chon khong hop le.\n";
         }
     }
 };
-
 int main(){
     menu mn;
     mn.hienthimenu();
-    return 0;
 }
-
